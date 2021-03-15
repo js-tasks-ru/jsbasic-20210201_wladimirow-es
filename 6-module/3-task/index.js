@@ -77,37 +77,36 @@ export default class Carousel {
   }
 
   addArrowClickEvents() {
-    document.addEventListener('DOMContentLoaded', () => {
-      let currentPosition = 0;
+    let currentPosition = 0;
+    const carouselInner = this.elem.querySelector('.carousel__inner');
+    const rightArrow = this.elem.querySelector('.carousel__arrow_right');
+    const leftArrow = this.elem.querySelector('.carousel__arrow_left');
+    
+    leftArrow.style.display = 'none';
+
+    rightArrow.addEventListener('click', () => {
       const offset = this.elem.querySelector('.carousel__slide').offsetWidth;
       const maxPosition = -offset * (this.elem.querySelectorAll('.carousel__slide').length - 1);
+      currentPosition -= offset;
+      carouselInner.style.transform = 'translateX(' + currentPosition + 'px)';
       
-      const carouselInner = this.elem.querySelector('.carousel__inner');
-      const rightArrow = this.elem.querySelector('.carousel__arrow_right');
-      const leftArrow = this.elem.querySelector('.carousel__arrow_left');
-      leftArrow.style.display = 'none';
-
-      rightArrow.addEventListener('click', () => {
-        currentPosition -= offset;
-        carouselInner.style.transform = 'translateX(' + currentPosition + 'px)';
-        
-        leftArrow.style.display = '';
-        if (currentPosition == maxPosition) {
-          rightArrow.style.display = 'none';
-        }
-      });
-
-      leftArrow.addEventListener('click', () => {
-        currentPosition += offset;
-        carouselInner.style.transform = 'translateX(' + currentPosition + 'px)';
-
-        rightArrow.style.display = '';
-        if (currentPosition == 0) {
-          leftArrow.style.display = 'none';
-        }
-      });
+      leftArrow.style.display = '';
+      if (currentPosition == maxPosition) {
+        rightArrow.style.display = 'none';
+      }
     });
-    
+
+    leftArrow.addEventListener('click', () => {
+      const offset = this.elem.querySelector('.carousel__slide').offsetWidth;
+      const maxPosition = -offset * (this.elem.querySelectorAll('.carousel__slide').length - 1);
+      currentPosition += offset;
+      carouselInner.style.transform = 'translateX(' + currentPosition + 'px)';
+
+      rightArrow.style.display = '';
+      if (currentPosition == 0) {
+        leftArrow.style.display = 'none';
+      }
+    });
   }
 
   createEvent(carouselButton, id) {
